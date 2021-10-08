@@ -11,15 +11,7 @@ admin.site.register(GeneralOrders, GeneralOrdersAdmin);
 
 class ApprovedOrdersAdmin(admin.ModelAdmin):
     model = ApprovedOrders
-    fieldsets = (
-        (None, {
-            "fields": (
-                ('parent','invoiceNumber')
-                
-            ),
-        }),
-    )    
-    list_display = ('id', 'parent', 'invoiceNumber')
+    #list_display = ['__all__',]
     #readonly_fields= ('parent__name',)
     #list_editable  = ('parent_name',)
 

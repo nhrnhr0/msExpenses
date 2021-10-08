@@ -4,28 +4,28 @@ from django.db.models.fields import DateField
 from django.utils import timezone
 
 # Create your models here.
+EMPTY = 'EM'
+CONSTANT = 'CO'
+ACQUISITION = 'AC'
+PROVIDERS = 'PR'
+TYPE_CHOICES = [
+    (EMPTY, 'בחר אפשררות'),
+    (CONSTANT, 'קבועות'),
+    (ACQUISITION, 'רכש'),
+    (PROVIDERS, 'ספקים'),
+]
 
+YES = 'YE'
+NO = 'NO'
+
+IS_APPROVE_CHOICES = [
+    (YES, 'כן'),
+    (NO, 'לא'),
+]
 
 class GeneralOrders(models.Model):
-    EMPTY = 'EM'
-    CONSTANT = 'CO'
-    ACQUISITION = 'AC'
-    PROVIDERS = 'PR'
-    TYPE_CHOICES = [
-        (EMPTY, 'בחר אפשררות'),
-        (CONSTANT, 'קבועות'),
-        (ACQUISITION, 'רכש'),
-        (PROVIDERS, 'ספקים'),
-    ]
-    
-    YES = 'YE'
-    NO = 'NO'
-    IS_APPROVE_CHOICES = [
-        (YES, 'כן'),
-        (NO, 'לא'),
-    ]
+
     created     = models.DateTimeField(editable=False)
-    modified    = models.DateTimeField(auto_now=True)
     name        = models.CharField(max_length=250)
     providerName= models.CharField(max_length=100)
     total       = models.FloatField(null=True, blank=True)
@@ -35,12 +35,12 @@ class GeneralOrders(models.Model):
         ''' On save, update timestamps '''
         if not self.id:
             self.created = timezone.now()
-        self.modified = timezone.now()
 
 
         if self.isApprove == GeneralOrders.YES:
             print('is approve is true')
-            data, created = ApprovedOrders.objects.get_or_create(parent=self,)
+            
+            #data, created = ApprovedOrders.objects.get_or_create(parent=self,)
 
 
         return super(GeneralOrders, self).save(*args, **kwargs)
@@ -77,7 +77,14 @@ class ApprovedOrders(models.Model):
         (EMPTY, 'אין חשבונית - אדום'),
     ]
 
-    parent = models.ForeignKey(to=GeneralOrders, on_delete=models.CASCADE) #models.OneToOneField(to=GeneralOrders, on_delete=models.CASCADE)
+    #parent = models.ForeignKey(to=GeneralOrders, on_delete=models.CASCADE) #models.OneToOneField(to=GeneralOrders, on_delete=models.CASCADE)
+    created     = models.DateTimeField(editable=False, null=True,)
+    modified    = models.DateTimeField(auto_now=True)
+    name        = models.CharField(max_length=250)
+    providerName= models.CharField(max_length=100)
+    total       = models.FloatField(null=True, blank=True)
+    type        = models.CharField(max_length=2,choices=TYPE_CHOICES,default=EMPTY,)
+    isApprove   = models.CharField(max_length=2,choices=[(YES, 'כן'),],default=YES,)
     invoiceNumber = models.CharField(max_length=50, blank=True)
     paidHow = models.CharField(max_length=2, choices=PAID_CHOICES,default=NOT_PAID)
     whenToPay = models.DateField(blank=True, null=True)
