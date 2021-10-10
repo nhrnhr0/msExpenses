@@ -2,3 +2,9 @@ db.sqlite3
 env
 *.pyc
 __pycache__
+
+my-svelte-project/node_modules/
+my-svelte-project/public/build/
+
+.DS_Store
+

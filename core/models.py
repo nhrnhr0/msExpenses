@@ -23,6 +23,34 @@ IS_APPROVE_CHOICES = [
     (NO, 'לא'),
 ]
 
+
+NOT_PAID = 'NP'
+BACK_TRANSFER = 'BT'
+DIRECT = 'DR'
+CREDIT_CARD = 'CC'
+CHECK = 'CH'
+CACHE = 'CA'
+PAID_CHOICES = [
+    (NOT_PAID, 'לא שולם'),
+    (BACK_TRANSFER, 'העברה בנקאית - ירוק'),
+    (DIRECT, 'דיירקט עידן - צהוב'),
+    (CREDIT_CARD, 'אשראי אופיר - כתום'),
+    (CHECK, 'צ\'ק נייר - אדום'),
+    (CACHE,'מזומן - כחול'),
+]
+IN_PC = 'PC'
+PHYSICAL = 'PH'
+DELIVERY = 'DL'
+EMPTY = 'EM'
+
+INVOICE_CHOICES = [
+    
+    (IN_PC, 'מסמך בתקייה במחשב - ירוק'),
+    (PHYSICAL, 'קובץ נייר במגירה - צהוב'),
+    (DELIVERY, 'במשלוח פיזי למשרד - כתום'),
+    (EMPTY, 'אין חשבונית - אדום'),
+]
+
 class GeneralOrders(models.Model):
 
     created     = models.DateTimeField(editable=False)
@@ -37,9 +65,10 @@ class GeneralOrders(models.Model):
             self.created = timezone.now()
 
 
-        if self.isApprove == GeneralOrders.YES:
+        if self.isApprove == YES:
             print('is approve is true')
-            
+            obj = ApprovedOrders.objects.create(created=self.created,name=self.name, providerName=self.providerName, total=self.total, type=self.type, isApprove=self.isApprove)
+            print(obj)
             #data, created = ApprovedOrders.objects.get_or_create(parent=self,)
 
 
@@ -50,32 +79,7 @@ class GeneralOrders(models.Model):
 
 
 class ApprovedOrders(models.Model):
-    NOT_PAID = 'NP'
-    BACK_TRANSFER = 'BT'
-    DIRECT = 'DR'
-    CREDIT_CARD = 'CC'
-    CHECK = 'CH'
-    CACHE = 'CA'
-    PAID_CHOICES = [
-        (NOT_PAID, 'לא שולם'),
-        (BACK_TRANSFER, 'העברה בנקאית - ירוק'),
-        (DIRECT, 'דיירקט עידן - צהוב'),
-        (CREDIT_CARD, 'אשראי אופיר - כתום'),
-        (CHECK, 'צ\'ק נייר - אדום'),
-        (CACHE,'מזומן - כחול'),
-    ]
-    IN_PC = 'PC'
-    PHYSICAL = 'PH'
-    DELIVERY = 'DL'
-    EMPTY = 'EM'
-    
-    INVOICE_CHOICES = [
-        
-        (IN_PC, 'מסמך בתקייה במחשב - ירוק'),
-        (PHYSICAL, 'קובץ נייר במגירה - צהוב'),
-        (DELIVERY, 'במשלוח פיזי למשרד - כתום'),
-        (EMPTY, 'אין חשבונית - אדום'),
-    ]
+
 
     #parent = models.ForeignKey(to=GeneralOrders, on_delete=models.CASCADE) #models.OneToOneField(to=GeneralOrders, on_delete=models.CASCADE)
     created     = models.DateTimeField(editable=False, null=True,)

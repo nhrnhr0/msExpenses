@@ -1,11 +1,21 @@
 from django.contrib import admin
 from django.contrib.admin.sites import site
+from django.db import models
+from django import forms
 from .models import ApprovedOrders, GeneralOrders
+
+class GeneralOrdersForm(forms.ModelForm):
+    
+    class Meta:
+        exclude = ['created',]
+        model = GeneralOrders
+
 # Register your models here.
 class GeneralOrdersAdmin(admin.ModelAdmin):
     model = GeneralOrders
     list_display = ('created', 'name', 'providerName', 'total','type',  'isApprove')
     list_editable = ('name', 'providerName', 'total', 'type', 'isApprove')
+    form = GeneralOrdersForm
 admin.site.register(GeneralOrders, GeneralOrdersAdmin);
 
 
