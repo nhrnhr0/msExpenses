@@ -25,10 +25,9 @@
         פעולות
     </th>
 </table>
-<button>חדש</button>
 <Modal>
-    <Content />
-  </Modal>
+    <Content/>
+</Modal>
 
 
 <style>

@@ -21,7 +21,7 @@ admin.site.register(GeneralOrders, GeneralOrdersAdmin);
 
 class ApprovedOrdersAdmin(admin.ModelAdmin):
     model = ApprovedOrders
-    #list_display = ['__all__',]
+    list_display = ('created','modified','name','providerName','total','type','isApprove','invoiceNumber','paidHow','whenToPay','invoiceLocation')
     #readonly_fields= ('parent__name',)
     #list_editable  = ('parent_name',)
 

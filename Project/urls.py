@@ -13,9 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
+from rest_framework import routers
+
+from core.views import GeneralOrdersViewSet, index_view
+
+svelteRouter = routers.DefaultRouter()
+svelteRouter.register(r'general', GeneralOrdersViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include(svelteRouter.urls)),
+    path('', index_view, name='index')
 ]

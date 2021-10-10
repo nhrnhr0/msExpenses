@@ -1,13 +1,17 @@
 <script>
 
 import { getContext } from 'svelte';
-  import Surprise from './Surprise.svelte';
-
+  import GeneralOderEditModal from './GeneralOderEditModal.svelte';
+  export let itemId;
   const { open } = getContext('simple-modal');
 
-  const showSurprise = () => {
-    open(Surprise, { message: "It's a modal!" });
+  const openGeneralOrderModal = () => {
+    open(GeneralOderEditModal, {itemId:itemId});
   };
 </script>
 
-<p><button on:click={showSurprise}>Show me a surprise!</button></p>
+{#if itemId }
+  <p><button on:click={openGeneralOrderModal}>ערוך</button></p>
+{:else}
+  <p><button on:click={openGeneralOrderModal}>חדש</button></p>
+{/if}
