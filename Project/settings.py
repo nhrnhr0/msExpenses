@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'django_filters',
     'core',
 ]
 
@@ -136,3 +137,11 @@ STATICFILES_DIRS = [
 
 MEDIA_URL= '/media/'
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media_root/')
+
+LOGIN_URL = '/admin/login/'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        #'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}

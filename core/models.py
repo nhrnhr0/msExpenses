@@ -4,10 +4,10 @@ from django.db.models.fields import DateField
 from django.utils import timezone
 
 # Create your models here.
-EMPTY = 'EM'
-CONSTANT = 'CO'
-ACQUISITION = 'AC'
-PROVIDERS = 'PR'
+EMPTY = 'ריק'
+CONSTANT = 'קבועות'
+ACQUISITION = 'רכש'
+PROVIDERS = 'ספקים'
 TYPE_CHOICES = [
     (EMPTY, 'בחר אפשררות'),
     (CONSTANT, 'קבועות'),
@@ -15,8 +15,8 @@ TYPE_CHOICES = [
     (PROVIDERS, 'ספקים'),
 ]
 
-YES = 'YE'
-NO = 'NO'
+YES = 'כן'
+NO = 'לא'
 
 IS_APPROVE_CHOICES = [
     (YES, 'כן'),
@@ -24,12 +24,12 @@ IS_APPROVE_CHOICES = [
 ]
 
 
-NOT_PAID = 'NP'
-BACK_TRANSFER = 'BT'
-DIRECT = 'DR'
-CREDIT_CARD = 'CC'
-CHECK = 'CH'
-CACHE = 'CA'
+NOT_PAID = 'לא שולם'
+BACK_TRANSFER = 'העברה בנקאית'
+DIRECT = 'דיירקט עידן'
+CREDIT_CARD = 'אשראי אופיר'
+CHECK =  'צ\'ק נייר'
+CACHE = 'מזומן'
 PAID_CHOICES = [
     (NOT_PAID, 'לא שולם'),
     (BACK_TRANSFER, 'העברה בנקאית - ירוק'),
@@ -38,10 +38,10 @@ PAID_CHOICES = [
     (CHECK, 'צ\'ק נייר - אדום'),
     (CACHE,'מזומן - כחול'),
 ]
-IN_PC = 'PC'
-PHYSICAL = 'PH'
-DELIVERY = 'DL'
-EMPTY = 'EM'
+IN_PC = 'מסמך בתקייה במחשב'
+PHYSICAL = 'קובץ נייר במגירה'
+DELIVERY = 'במשלוח פיזי למשרד'
+EMPTY = 'אין חשבונית'
 
 INVOICE_CHOICES = [
     
@@ -57,21 +57,12 @@ class GeneralOrders(models.Model):
     name        = models.CharField(max_length=250)
     providerName= models.CharField(max_length=100)
     total       = models.FloatField(null=True, blank=True)
-    type        = models.CharField(max_length=2,choices=TYPE_CHOICES,default=EMPTY,)
-    isApprove   = models.CharField(max_length=2,choices=IS_APPROVE_CHOICES,default=NO,)
+    type        = models.CharField(max_length=50,choices=TYPE_CHOICES,default=EMPTY,)
+    #isApprove   = models.CharField(max_length=50,choices=IS_APPROVE_CHOICES,default=NO,)
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
             self.created = timezone.now()
-
-
-        if self.isApprove == YES:
-            print('is approve is true')
-            obj = ApprovedOrders.objects.create(created=self.created,name=self.name, providerName=self.providerName, total=self.total, type=self.type, isApprove=self.isApprove)
-            print(obj)
-            #data, created = ApprovedOrders.objects.get_or_create(parent=self,)
-
-
         return super(GeneralOrders, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -87,9 +78,9 @@ class ApprovedOrders(models.Model):
     name        = models.CharField(max_length=250)
     providerName= models.CharField(max_length=100)
     total       = models.FloatField(null=True, blank=True)
-    type        = models.CharField(max_length=2,choices=TYPE_CHOICES,default=EMPTY,)
-    isApprove   = models.CharField(max_length=2,choices=[(YES, 'כן'),],default=YES,)
+    type        = models.CharField(max_length=50,choices=TYPE_CHOICES,default=EMPTY,)
+    #isApprove   = models.CharField(max_length=50,choices=[(YES, 'כן'),],default=YES,)
     invoiceNumber = models.CharField(max_length=50, blank=True)
-    paidHow = models.CharField(max_length=2, choices=PAID_CHOICES,default=NOT_PAID)
+    paidHow = models.CharField(max_length=50, choices=PAID_CHOICES,default=NOT_PAID)
     whenToPay = models.DateField(blank=True, null=True)
-    invoiceLocation = models.CharField(max_length=2, choices=INVOICE_CHOICES, default=EMPTY)
+    invoiceLocation = models.CharField(max_length=50, choices=INVOICE_CHOICES, default=EMPTY)

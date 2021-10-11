@@ -3,6 +3,7 @@
 import { getContext } from 'svelte';
   import GeneralOderEditModal from './GeneralOderEditModal.svelte';
   export let itemId;
+
   const { open } = getContext('simple-modal');
 
   const openGeneralOrderModal = () => {
@@ -11,7 +12,7 @@ import { getContext } from 'svelte';
 </script>
 
 {#if itemId }
-  <p><button on:click={openGeneralOrderModal}>ערוך</button></p>
+  <button on:click={openGeneralOrderModal}>ערוך</button>
 {:else}
-  <p><button on:click={openGeneralOrderModal}>חדש</button></p>
+  <button on:click={openGeneralOrderModal}>חדש</button>
 {/if}

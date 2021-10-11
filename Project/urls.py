@@ -15,16 +15,18 @@ Including another URLconf
 """
 from django.conf.urls import include
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from rest_framework import routers
 
-from core.views import GeneralOrdersViewSet, index_view
+from core.views import ApprovedOrdersViewSet, GeneralOrdersViewSet, index_view,approve_general_order
 
 svelteRouter = routers.DefaultRouter()
 svelteRouter.register(r'general', GeneralOrdersViewSet)
+svelteRouter.register(r'approved', ApprovedOrdersViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(svelteRouter.urls)),
-    path('', index_view, name='index')
+    path('', index_view, name='index'),
+    re_path('approve-go/(?P<item_id>\d+)/$', approve_general_order, name='approve_general_order')
 ]
