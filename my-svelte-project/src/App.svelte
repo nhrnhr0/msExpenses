@@ -3,7 +3,7 @@
 
 	import GeneralOrders from './GeneralOrders/GeneralOrders.svelte'
 	import ApprovedOrders from './ApprovedOrders/ApprovedOrders.svelte'
-
+	import ArchivedOrders from './ArchivedOrders/ArchivedOrders.svelte';
 	import { Tabs,Tab } from 'svelte-chota';
 
 	let active_tab = window.sessionStorage.getItem('active_tab') || 0;
@@ -20,6 +20,7 @@
 	<Tabs full bind:active={active_tab}>
 		<Tab>הזמנות כלליות</Tab>
 		<Tab>הזמנות מאושרות</Tab>
+		<Tab>הזמנות סגורות</Tab>
 	</Tabs>
 
 	{#if active_tab == 0}
@@ -28,6 +29,9 @@
 	{:else if active_tab == 1} 
 		<h1>הזמנות מאושרות</h1>
 		<ApprovedOrders/>
+	{:else if active_tab == 2} 
+		<h1>הזמנות סגורות</h1>
+		<ArchivedOrders/>
 	{/if}
 
 
@@ -59,5 +63,9 @@
 	}
 	:global(.svelte-tabs li.svelte-tabs__selected) {
 		background-color: #eee;
+	}
+	main {
+		max-width: 100vw;
+		overflow-x: hidden;
 	}
 </style>

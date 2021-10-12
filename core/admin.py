@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.sites import site
 from django.db import models
 from django import forms
-from .models import ApprovedOrders, GeneralOrders
+from .models import ApprovedOrders, ArchivedOrders, GeneralOrders
 
 class GeneralOrdersForm(forms.ModelForm):
     
@@ -28,3 +28,14 @@ class ApprovedOrdersAdmin(admin.ModelAdmin):
     #def parent_name(self, obj):
         #return obj.parent.name
 admin.site.register(ApprovedOrders, ApprovedOrdersAdmin);
+
+
+class ArchivedOrdersAdmin(admin.ModelAdmin):
+    model = ArchivedOrders
+    list_display = ('created','modified','name','providerName','total','type','invoiceNumber','paidHow','whenToPay','invoiceLocation')
+    #readonly_fields= ('parent__name',)
+    #list_editable  = ('parent_name',)
+
+    #def parent_name(self, obj):
+        #return obj.parent.name
+admin.site.register(ArchivedOrders, ArchivedOrdersAdmin);

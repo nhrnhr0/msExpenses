@@ -41,6 +41,7 @@ PAID_CHOICES = [
 IN_PC = 'מסמך בתקייה במחשב'
 PHYSICAL = 'קובץ נייר במגירה'
 DELIVERY = 'במשלוח פיזי למשרד'
+NON_REPORTABLE = 'לא ניתן לדיווח'
 EMPTY = 'אין חשבונית'
 
 INVOICE_CHOICES = [
@@ -48,6 +49,7 @@ INVOICE_CHOICES = [
     (IN_PC, 'מסמך בתקייה במחשב - ירוק'),
     (PHYSICAL, 'קובץ נייר במגירה - צהוב'),
     (DELIVERY, 'במשלוח פיזי למשרד - כתום'),
+    (NON_REPORTABLE, 'לא ניתן לדיווח'),
     (EMPTY, 'אין חשבונית - אדום'),
 ]
 
@@ -70,8 +72,6 @@ class GeneralOrders(models.Model):
 
 
 class ApprovedOrders(models.Model):
-
-
     #parent = models.ForeignKey(to=GeneralOrders, on_delete=models.CASCADE) #models.OneToOneField(to=GeneralOrders, on_delete=models.CASCADE)
     created     = models.DateTimeField(editable=False, null=True,)
     modified    = models.DateTimeField(auto_now=True)
@@ -81,6 +81,23 @@ class ApprovedOrders(models.Model):
     type        = models.CharField(max_length=50,choices=TYPE_CHOICES,default=EMPTY,)
     #isApprove   = models.CharField(max_length=50,choices=[(YES, 'כן'),],default=YES,)
     invoiceNumber = models.CharField(max_length=50, blank=True)
+    paid = models.BooleanField(default=False)
+    paidHow = models.CharField(max_length=50, choices=PAID_CHOICES,default=NOT_PAID)
+    whenToPay = models.DateField(blank=True, null=True)
+    invoiceLocation = models.CharField(max_length=50, choices=INVOICE_CHOICES, default=EMPTY)
+
+
+
+class ArchivedOrders(models.Model):
+    #parent = models.ForeignKey(to=GeneralOrders, on_delete=models.CASCADE) #models.OneToOneField(to=GeneralOrders, on_delete=models.CASCADE)
+    created     = models.DateTimeField(editable=False, null=True,)
+    modified    = models.DateTimeField(auto_now=True)
+    name        = models.CharField(max_length=250)
+    providerName= models.CharField(max_length=100)
+    total       = models.FloatField(null=True, blank=True)
+    type        = models.CharField(max_length=50,choices=TYPE_CHOICES,default=EMPTY,)
+    invoiceNumber = models.CharField(max_length=50, blank=True)
+    paid = models.BooleanField(default=False)
     paidHow = models.CharField(max_length=50, choices=PAID_CHOICES,default=NOT_PAID)
     whenToPay = models.DateField(blank=True, null=True)
     invoiceLocation = models.CharField(max_length=50, choices=INVOICE_CHOICES, default=EMPTY)

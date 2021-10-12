@@ -22,7 +22,11 @@
     let paidHow_input_value;
     let whenToPay_input_value;
     let invoiceLocation_input_value;
+    let paid_input_value;
     let fields_disabled = false;
+    
+    
+    
 
     function can_save(name, provider, total, type) {
         console.log('type: ', type);
@@ -38,6 +42,7 @@
         var formdata = new FormData();
         debugger;
         console.log('whenToPay_input_value: ', whenToPay_input_value);
+        console.log('paid_input_value: ', paid_input_value);
         formdata.append("id" , item.id);
         formdata.append("name", name_input_value);
         formdata.append("providerName", provider_input_value);
@@ -45,6 +50,7 @@
         formdata.append("type", type_input_value);
         formdata.append("invoiceNumber", invoiceNumber_input_value);
         formdata.append("paidHow", paidHow_input_value);
+        formdata.append('paid', paid_input_value);
         if (whenToPay_input_value) {
             formdata.append("whenToPay", whenToPay_input_value);
         }
@@ -71,7 +77,7 @@
         paidHow_input_value = result.paidHow;
         whenToPay_input_value = result.whenToPay;
         invoiceLocation_input_value =result.invoiceLocation;
-
+        paid_input_value = result.paid;
     }
 
     onMount(()=> {
@@ -119,6 +125,8 @@
         <input type="text" name="invoiceNumber" bind:value={invoiceNumber_input_value}>
     </div>
 
+    
+
     <div class="form-group">
         <label for="paidHow">איך תשלום:</label>
         <select name="paidHow" bind:value={paidHow_input_value}> 
@@ -128,6 +136,11 @@
             <option value="צ'ק נייר">צ'ק נייר</option>
             <option value="מזומן">מזומן</option>
         </select>
+    </div>
+
+    <div class="form-group">
+        <label for="paid">האם שולם פיזית:</label>
+        <input type="checkbox" name="paid" bind:checked={paid_input_value} />
     </div>
 
     <div class="form-group">
@@ -143,13 +156,11 @@
             <option value="מסמך בתקייה במחשב">מסמך בתקייה במחשב</option>
             <option value="קובץ נייר במגירה">קובץ נייר במגירה</option>
             <option value="במשלוח פיזי למשרד">במשלוח פיזי למשרד</option>
+            <option value="לא ניתן לדיווח">לא ניתן לדיווח</option>
         </select>
     </div>
 
-    <div>
-        erorrs:
-        {JSON.stringify(formErrors, null, 2)}
-    </div>
+    
 
     {#if fields_disabled}
         <button><Circle size="40" color="#FF3E00" unit="px" duration="1s"></Circle></button>

@@ -1,16 +1,15 @@
 <script>
     import Modal from 'svelte-simple-modal';
-    import Content from './ApprovedOrderEdit.svelte'
-    import ArchiveModal from './ArchiveModal.svelte'
+    import SvelteTooltip from 'svelte-tooltip';
+    
     import {
         Circle
     } from 'svelte-loading-spinners'
     import {
         onMount
     } from 'svelte'
-    import {approvedOrdersRequestUpdate} from './ApprovedOrdersStores'
     let all_rows_data = [];
-    let BASE_API_URL = '/api/approved/'
+    let BASE_API_URL = '/api/archived/'
     let query = BASE_API_URL;
     let sortBy = {col: "created", ascending: true};
     $: sort = (column) => {
@@ -35,13 +34,6 @@
         all_rows_data = all_rows_data.sort(sort);
 	}
 
-
-    approvedOrdersRequestUpdate.subscribe(value => {
-		if(value == true) {
-            refresh_from_server();
-        }
-	});
-
     function get_from_server() {
         var requestOptions = {
             method: 'GET',
@@ -54,11 +46,9 @@
                 console.log('got result: ', result);
                 all_rows_data = result;
                 refreshing = false;
-                approvedOrdersRequestUpdate.set(false);
             })
             .catch(error => {
                 console.log('error', error)
-                approvedOrdersRequestUpdate.set(false);
                 refreshing = false;
             });
     }
@@ -73,7 +63,6 @@
         get_from_server();
     })
 
-    
 </script>
 
 <div class="buttons">
@@ -123,9 +112,6 @@
         <th class:sorted="{sortBy['col'] == 'invoiceLocation'}" on:click={sort("invoiceLocation")}>
             מיקום חשבונית
         </th>
-        <th>
-            פעולות
-        </th>
     </tr>
     {#each all_rows_data as row} 
         <tr>
@@ -142,31 +128,6 @@
             <td>{row.paidHow}</td>
             <td>{new Date(row.whenToPay).toLocaleDateString('he-IL', {timeZone:'Asia/Jerusalem'})}</td>
             <td>{row.invoiceLocation}</td>
-            <td>
-                <div class="actions">
-                    <div class="btn">
-                        <Modal>
-                            <Content item={row} />
-                        </Modal>
-                    </div>
-                    <div class="btn">
-                        {#key row}
-                            <Modal>
-                                <ArchiveModal item={row} />
-                            </Modal>
-                        {/key}
-                    </div>
-                </div>
-                <!--
-                <Modal>
-                    <ApproveModal itemId={row.id} />
-                </Modal>
-                <button>מחק</button>
-                <Modal>
-                    <Content itemId={row.id} />
-                </Modal>
-                -->
-            </td>
         </tr>
     {/each}
 </table>
@@ -174,16 +135,6 @@
 
 
 <style lang="scss">
-    .actions {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        & > .btn {
-            padding: 5px;
-            margin:5px;
-        }
-    }
     .buttons {
         min-height: 150px;
         display: flex;
