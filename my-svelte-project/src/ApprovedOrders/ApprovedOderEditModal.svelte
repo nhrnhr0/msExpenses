@@ -133,6 +133,7 @@
             <option value="לא שולם">לא שולם</option>
             <option value="העברה בנקאית">העברה בנקאית</option>
             <option value="דיירקט עידן">דיירקט עידן</option>
+            <option value="אשראי אופיר">אשראי אופיר</option>
             <option value="צ'ק נייר">צ'ק נייר</option>
             <option value="מזומן">מזומן</option>
         </select>
