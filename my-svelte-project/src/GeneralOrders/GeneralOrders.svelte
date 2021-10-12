@@ -110,7 +110,7 @@
             ספק
         </th>
         <th class:sorted="{sortBy['col'] == 'total'}" on:click={sort("total")}>
-            סכום
+            סכום + מע"מ
         </th>
         <th class:sorted="{sortBy['col'] == 'type'}" on:click={sort("type")}>
             סוג הוצאה
@@ -154,8 +154,14 @@
     table {
         width: 100%;
         border: 1px solid black;
-
+        
         margin-bottom: 150px;
+
+        @media screen and (max-width: 700px) {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
     }
     #table {
         font-family: Arial, Helvetica, sans-serif;

@@ -100,7 +100,7 @@
         </div>
     {/if}
     <div class="form-group">
-        <label for="name">שם:</label>
+        <label for="name">מה תרצו להזמין:</label>
         <Input type="text" disabled={fields_disabled} name="name" bind:value={name_input_value} />
     </div>
     <div class="form-group">
@@ -108,7 +108,7 @@
         <Input type="text" name="provider" bind:value={provider_input_value} />
     </div>
     <div class="form-group">
-        <label for="total">עלות:</label>
+        <label for="total">עלות + מע"מ:</label>
         <Input type="text" name="total" bind:value={total_input_value} />
     </div>
     <div class="form-group">

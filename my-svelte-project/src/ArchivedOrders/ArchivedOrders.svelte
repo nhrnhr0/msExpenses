@@ -92,7 +92,7 @@
             ספק
         </th>
         <th class:sorted="{sortBy['col'] == 'total'}" on:click={sort("total")}>
-            סכום
+            סכום + מע"מ
         </th>
         <th class:sorted="{sortBy['col'] == 'type'}" on:click={sort("type")}>
             סוג הוצאה
