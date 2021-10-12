@@ -8,7 +8,7 @@
     import {
         onMount
     } from 'svelte'
-
+    import {generalOrdersRequestUpdate} from './GeneralOrdersStores'
     let all_rows_data = [];
     let BASE_API_URL = '/api/general/'
     let query = BASE_API_URL;
@@ -35,6 +35,12 @@
         all_rows_data = all_rows_data.sort(sort);
 	}
 
+    generalOrdersRequestUpdate.subscribe(value => {
+		if(value == true) {
+            refresh_from_server();
+        }
+	});
+
 
     function get_from_server() {
         var requestOptions = {
@@ -48,9 +54,16 @@
                 console.log('got result: ', result);
                 all_rows_data = result;
                 refreshing = false;
+                
+                generalOrdersRequestUpdate.set(false);
             })
-            .catch(error => console.log('error', error));
+            .catch(error => {
+                console.log('error', error)
+                refreshing = false;
+                generalOrdersRequestUpdate.set(false);
+        });
     }
+    
     function refresh_from_server() {
         refreshing = true;
         get_from_server();

@@ -14,11 +14,11 @@ export function server_update_order(formdata, on_result, on_error) {
     };
     console.log('requestOptions: ', requestOptions);
     console.log('itemId: ', itemId);
-    debugger;
 
     fetch(`/api/approved/${itemId}/`, requestOptions)
         .then(response => response.json())
         .then(result => {
+            console.log(`hey, just got result from /api/approved/${itemId}/`, result)
             on_result(result);
         })
         .catch(error => {

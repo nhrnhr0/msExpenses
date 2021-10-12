@@ -10,6 +10,8 @@
     } from '../utils'
     import {onMount} from 'svelte';
     import {server_update_order} from './ApprovedOrdersAPI'
+    import {approvedOrdersRequestUpdate} from './ApprovedOrdersStores'
+
     let formErrors = {}
 
     let name_input_value;
@@ -34,21 +36,26 @@
     function update_order() {
         fields_disabled = true;
         var formdata = new FormData();
-        
+        debugger;
+        console.log('whenToPay_input_value: ', whenToPay_input_value);
         formdata.append("id" , item.id);
         formdata.append("name", name_input_value);
         formdata.append("providerName", provider_input_value);
         formdata.append("total", total_input_value);
         formdata.append("type", type_input_value);
         formdata.append("invoiceNumber", invoiceNumber_input_value);
-        formdata.append("paidHow_input", paidHow_input_value);
-        formdata.append("whenToPay", whenToPay_input_value);
+        formdata.append("paidHow", paidHow_input_value);
+        if (whenToPay_input_value) {
+            formdata.append("whenToPay", whenToPay_input_value);
+        }
         formdata.append("invoiceLocation", invoiceLocation_input_value);
 
 
         server_update_order(formdata, (result)=>{
                 set_order_result(result)
                 fields_disabled = false;
+                approvedOrdersRequestUpdate.set(true);
+
             }, (error)=> {
                 formErrors = error;
                 alert(error);
@@ -60,6 +67,11 @@
         provider_input_value = result.providerName;
         total_input_value = result.total;
         type_input_value = result.type;
+        invoiceNumber_input_value = result.invoiceNumber;
+        paidHow_input_value = result.paidHow;
+        whenToPay_input_value = result.whenToPay;
+        invoiceLocation_input_value =result.invoiceLocation;
+
     }
 
     onMount(()=> {
@@ -113,14 +125,14 @@
             <option value="לא שולם">לא שולם</option>
             <option value="העברה בנקאית">העברה בנקאית</option>
             <option value="דיירקט עידן">דיירקט עידן</option>
-            <option value="צ\'ק נייר">צ'ק נייר</option>
+            <option value="צ'ק נייר">צ'ק נייר</option>
             <option value="מזומן">מזומן</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="whenToPay">תאריך תשלום:</label>
-        <Input error={formErrors['whenToPay']} type="date" name="whenToPay" bind:value={whenToPay_input_value} />
+        <Input type="date" name="whenToPay" bind:value={whenToPay_input_value} />
     </div>
 
 
@@ -132,6 +144,11 @@
             <option value="קובץ נייר במגירה">קובץ נייר במגירה</option>
             <option value="במשלוח פיזי למשרד">במשלוח פיזי למשרד</option>
         </select>
+    </div>
+
+    <div>
+        erorrs:
+        {JSON.stringify(formErrors, null, 2)}
     </div>
 
     {#if fields_disabled}

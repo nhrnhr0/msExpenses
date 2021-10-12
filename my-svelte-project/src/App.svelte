@@ -6,8 +6,9 @@
 
 	import { Tabs,Tab } from 'svelte-chota';
 
-	let active_tab = window.sessionStorage.getItem('active_tab', 0);
+	let active_tab = window.sessionStorage.getItem('active_tab') || 0;
 	$: {
+		
 		console.log('saving active tab to localStorage', active_tab);
 		window.sessionStorage.setItem('active_tab', active_tab);
 	}

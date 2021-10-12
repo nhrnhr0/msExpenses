@@ -9,6 +9,8 @@
     } from '../utils'
     import {onMount} from 'svelte';
     import {server_create_order,server_get_order,server_update_order} from './GeneralOrdersAPI'
+    import {generalOrdersRequestUpdate} from './GeneralOrdersStores'
+
     let name_input_value;
     let provider_input_value;
     let total_input_value;
@@ -39,6 +41,7 @@
         server_create_order(formdata, (result)=>{
             set_order_result(result);
             fields_disabled = false;
+            generalOrdersRequestUpdate.set(true);
         });
     }
 
@@ -53,6 +56,7 @@
     server_update_order(formdata, (result)=>{
             set_order_result(result)
             fields_disabled = false;
+            generalOrdersRequestUpdate.set(true);
         })
     }
 

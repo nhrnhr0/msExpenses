@@ -140,6 +140,7 @@ MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media_root/')
 
 LOGIN_URL = '/admin/login/'
 REST_FRAMEWORK = {
+    'DATE_INPUT_FORMATS': [("%Y-%m-%d"),],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         #'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',

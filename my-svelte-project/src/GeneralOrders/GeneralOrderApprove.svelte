@@ -3,6 +3,8 @@
     import { getContext } from 'svelte';
       import GeneralOrderApproveModal from './GeneralOrderApproveModal.svelte';
       export let itemId;
+      import {generalOrdersRequestUpdate} from './GeneralOrdersStores'
+
       import {getCookie} from '../utils'
 
       const { open } = getContext('simple-modal');
@@ -25,6 +27,7 @@
             .then(response => response.json())
             .then(result => {
                 console.log('result: ', result);
+                generalOrdersRequestUpdate.set(true);
             })
             .catch(error => console.log('error', error));
       }

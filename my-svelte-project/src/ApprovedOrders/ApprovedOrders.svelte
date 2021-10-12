@@ -1,13 +1,14 @@
 <script>
     import Modal from 'svelte-simple-modal';
     import Content from './ApprovedOrderEdit.svelte'
+    
     import {
         Circle
     } from 'svelte-loading-spinners'
     import {
         onMount
     } from 'svelte'
-
+    import {approvedOrdersRequestUpdate} from './ApprovedOrdersStores'
     let all_rows_data = [];
     let BASE_API_URL = '/api/approved/'
     let query = BASE_API_URL;
@@ -35,6 +36,12 @@
 	}
 
 
+    approvedOrdersRequestUpdate.subscribe(value => {
+		if(value == true) {
+            refresh_from_server();
+        }
+	});
+
     function get_from_server() {
         var requestOptions = {
             method: 'GET',
@@ -47,8 +54,13 @@
                 console.log('got result: ', result);
                 all_rows_data = result;
                 refreshing = false;
+                approvedOrdersRequestUpdate.set(false);
             })
-            .catch(error => console.log('error', error));
+            .catch(error => {
+                console.log('error', error)
+                approvedOrdersRequestUpdate.set(false);
+                refreshing = false;
+            });
     }
     function refresh_from_server() {
         refreshing = true;
@@ -122,7 +134,8 @@
             <td>{row.type}</td>
             <td>{row.invoiceNumber}</td>
             <td>{row.paidHow}</td>
-            <td>{row.whenToPay}</td>
+            
+            <td>{new Date(row.whenToPay).toLocaleDateString('he-IL', {timeZone:'Asia/Jerusalem'})}</td>
             <td>{row.invoiceLocation}</td>
             <td>
                 <Modal>
