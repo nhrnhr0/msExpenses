@@ -108,7 +108,7 @@
         <Input type="text" name="provider" bind:value={provider_input_value} />
     </div>
     <div class="form-group">
-        <label for="total">עלות + מע"מ:</label>
+        <label for="total">עלות כולל מע"מ:</label>
         <Input type="text" name="total" bind:value={total_input_value} />
     </div>
     <div class="form-group">
